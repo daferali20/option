@@ -1,7 +1,7 @@
 // دالة لجلب بيانات عقود الأوبشن
 async function fetchOptionsData() {
     const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // خادم وسيط لتجاوز قيود CORS
-    const apiUrl = "https://your-api-url.com/options"; // ضع رابط API الخاص بك هنا
+    const apiUrl = "https://query1.finance.yahoo.com/v7/finance/options/TSLA"; // ضع رابط API الخاص بك هنا
 
     try {
         const response = await fetch(proxyUrl + apiUrl);
