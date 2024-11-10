@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Options Trading Volume with Proxy</title>
+</head>
+<body>
+    <h1>Yahoo Finance Options Trading Volume</h1>
+    <input type="text" id="ticker" placeholder="Enter Stock Ticker (e.g., AAPL)">
+    <button onclick="fetchOptionsData()">Get Options Data</button>
+
+    <h2>Options Trading Volume</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Expiration Date</th>
+                <th>Strike Price</th>
+                <th>Volume</th>
+                <th>Open Interest</th>
+                <th>Option Type</th>
+            </tr>
+        </thead>
+        <tbody id="optionsData"></tbody>
+    </table>
+
+    <script>
+        async function fetchOptionsData() {
+            const ticker = document.getElementById("ticker").value.toUpperCase();
+            if (!ticker) {
+                alert("Please enter a valid stock ticker.");
+                return;
+            }
+
+            // استخدام CORS Anywhere كخادم وسيط
+            const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+            const apiUrl = `https://query1.finance.yahoo.com/v7/finance/options/${ticker}`;
+
+            try {
+                const response = await fetch(proxyUrl + apiUrl);
+                const data = await response.json();
+
+                // التحقق من وجود بيانات
+                if (!data || !data.optionChain || !data.optionChain.result) {
+                    alert("No options data found.");
+                    return;
+                }
+
+                const options = data.optionChain.result[0].options[0];
+                const tbody = document.getElementById("optionsData");
+                tbody.innerHTML = "";
+
+                // عرض بيانات Call Options
+                options.calls.forEach(option => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${new Date(option.expiration * 1000).toLocaleDateString()}</td>
+                        <td>${option.strike}</td>
+                        <td>${option.volume}</td>
+                        <td>${option.openInterest}</td>
+                        <td>Call</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // عرض بيانات Put Options
+                options.puts.forEach(option => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${new Date(option.expiration * 1000).toLocaleDateString()}</td>
+                        <td>${option.strike}</td>
+                        <td>${option.volume}</td>
+                        <td>${option.openInterest}</td>
+                        <td>Put</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error fetching options data:", error);
+                alert("Failed to fetch options data.");
+            }
+        }
+    </script>
+</body>
+</html>
