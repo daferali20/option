@@ -1,63 +1,44 @@
- async function fetchOptionsData() {
-            const ticker = document.getElementById("ticker").value.toUpperCase();
-            if (!ticker) {
-                alert("Please enter a valid stock ticker.");
-                return;
-            }
+// دالة لجلب بيانات عقود الأوبشن
+async function fetchOptionsData() {
+    const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // خادم وسيط لتجاوز قيود CORS
+    const apiUrl = "https://your-api-url.com/options"; // ضع رابط API الخاص بك هنا
 
-            // استخدام CORS Anywhere كخادم وسيط
-            const proxyUrl = "https://cors-anywhere.herokuapp.com/";
-            const apiUrl = `https://query1.finance.yahoo.com/v7/finance/options/${ticker}`;
+    try {
+        const response = await fetch(proxyUrl + apiUrl);
 
-            try {
-                const response = await fetch(proxyUrl + apiUrl);
-              if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-                const data = await response.json();
- console.log("Data fetched successfully:", data);
-        } catch (error) {
-            console.error("Failed to fetch options data:", error);
-            alert("Failed to fetch options data. Please check the console for more details.");
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
+        const data = await response.json();
+        displayOptionsData(data);
+    } catch (error) {
+        console.error("Failed to fetch options data:", error);
+        document.getElementById("errorMessage").style.display = "block";
     }
-                // التحقق من وجود بيانات
-                if (!data || !data.optionChain || !data.optionChain.result) {
-                    alert("No options data found.");
-                    return;
-                }
+}
 
-                const options = data.optionChain.result[0].options[0];
-                const tbody = document.getElementById("optionsData");
-                tbody.innerHTML = "";
+// دالة لعرض البيانات في الجدول
+function displayOptionsData(data) {
+    const options = data.optionChain.result[0].options[0].calls;
+    const tableBody = document.getElementById("optionsTableBody");
 
-                // عرض بيانات Call Options
-                options.calls.forEach(option => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>${new Date(option.expiration * 1000).toLocaleDateString()}</td>
-                        <td>${option.strike}</td>
-                        <td>${option.volume}</td>
-                        <td>${option.openInterest}</td>
-                        <td>Call</td>
-                    `;
-                    tbody.appendChild(row);
-                });
+    // تنظيف الجدول قبل إضافة البيانات
+    tableBody.innerHTML = "";
 
-                // عرض بيانات Put Options
-                options.puts.forEach(option => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>${new Date(option.expiration * 1000).toLocaleDateString()}</td>
-                        <td>${option.strike}</td>
-                        <td>${option.volume}</td>
-                        <td>${option.openInterest}</td>
-                        <td>Put</td>
-                    `;
-                    tbody.appendChild(row);
-                });
-            } catch (error) {
-                console.error("Error fetching options data:", error);
-                alert("Failed to fetch options data.");
-            }
-        }
+    // تصفية العقود التي يكون حجمها أكبر من 5000 فقط
+    options.filter(option => option.volume > 5000).forEach(option => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${new Date(option.expirationDate * 1000).toLocaleDateString()}</td>
+            <td>${option.volume}</td>
+            <td>${option.contractSymbol}</td>
+            <td>${option.bid.toFixed(2)}</td>
+            <td>${option.ask.toFixed(2)}</td>
+            <td>${option.change.toFixed(2)}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+
+    console.log("Options data displayed successfully!");
+}
