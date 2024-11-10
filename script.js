@@ -1,7 +1,7 @@
-// دالة لجلب بيانات عقود الأوبشن
+// دالة لجلب بيانات عقود الأوبشن باستخدام Alpha Vantage
 async function fetchOptionsData() {
     const proxyUrl = "https://cors-anywhere.herokuapp.com/"; // خادم وسيط لتجاوز قيود CORS
-    const apiUrl = "https://query1.finance.yahoo.com/v7/finance/options/TSLA"; // ضع رابط API الخاص بك هنا
+    const apiUrl = "https://www.alphavantage.co/query?function=OPTION_CHAIN&symbol=TSLA&apikey=26E4LN8EWHQHLJSG";
 
     try {
         const response = await fetch(proxyUrl + apiUrl);
@@ -20,7 +20,7 @@ async function fetchOptionsData() {
 
 // دالة لعرض البيانات في الجدول
 function displayOptionsData(data) {
-    const options = data.optionChain.result[0].options[0].calls;
+    const options = data.optionChain.result[0].options[0].calls || [];
     const tableBody = document.getElementById("optionsTableBody");
 
     // تنظيف الجدول قبل إضافة البيانات
