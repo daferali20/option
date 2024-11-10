@@ -3,36 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Options Trading Volume with Proxy</title>
+    <title>Options Trading Data</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Yahoo Finance Options Trading Volume</h1>
-    <input type="text" id="ticker" placeholder="Enter Stock Ticker (e.g., AAPL)">
-    <button onclick="fetchOptionsData()">Get Options Data</button>
 
-    <h2>Options Trading Volume</h2>
-    <table border="1">
+    <h1 style="text-align: center;">Options Trading Data</h1>
+
+    <!-- زر لجلب البيانات -->
+    <div style="text-align: center; margin-bottom: 20px;">
+        <button onclick="fetchOptionsData()">Fetch Options Data</button>
+    </div>
+
+    <!-- جدول عرض البيانات -->
+    <table id="optionsTable">
         <thead>
             <tr>
                 <th>Expiration Date</th>
-                <th>Strike Price</th>
                 <th>Volume</th>
-                <th>Open Interest</th>
-                <th>Option Type</th>
+                <th>Ticker Symbol</th>
+                <th>Bid</th>
+                <th>Ask</th>
+                <th>Change</th>
             </tr>
         </thead>
-        <tbody id="optionsData"></tbody>
+        <tbody id="optionsTableBody">
+            <!-- سيتم إضافة البيانات هنا بواسطة JavaScript -->
+        </tbody>
     </table>
 
-   <script src="script.js"></script>
+    <!-- رسالة الخطأ -->
+    <div id="errorMessage" style="color: red; text-align: center; display: none;">
+        Failed to fetch options data. Please try again later.
+    </div>
+
+    <script src="script.js"></script>
 
     <!-- Footer Section -->
-<footer style="background-color: #333; color: #fff; text-align: center; padding: 20px 0; position: fixed; bottom: 0; width: 100%;">
-    <div>
-        <a href="index.html" style="color: #fff; text-decoration: none; margin: 0 15px;">Home Page</a>
-        <a href="num.html" style="color: #fff; text-decoration: none; margin: 0 15px;">Table Page</a>
-    </div>
-</footer>
+    <footer style="background-color: #333; color: #fff; text-align: center; padding: 20px 0; position: fixed; bottom: 0; width: 100%;">
+        <div>
+            <a href="index.html" style="color: #fff; text-decoration: none; margin: 0 15px;">Home Page</a>
+            <a href="transactions.html" style="color: #fff; text-decoration: none; margin: 0 15px;">Transactions</a>
+        </div>
+    </footer>
 
 </body>
 </html>
