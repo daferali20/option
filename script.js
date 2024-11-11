@@ -1,7 +1,7 @@
 // دالة لجلب بيانات عقود الأوبشن باستخدام Alpha Vantage
 async function fetchOptionsData() {
     const proxyUrl = "https://corsproxy.io/?"; // خادم وسيط لتجاوز قيود CORS
-    //const apiUrl = "https://www.alphavantage.co/query?function=OPTION_CHAIN&symbol=TSLA&apikey=26E4LN8EWHQHLJSG";
+    const apiUrl = "https://www.alphavantage.co/query?function=OPTION_CHAIN&symbol=TSLA&apikey=26E4LN8EWHQHLJSG";
     const url = 'https://corsproxy.io/?' + encodeURIComponent('https://www.alphavantage.co/query?function=OPTION_CHAIN&symbol=TSLA&apikey=26E4LN8EWHQHLJSG');
 
     try {
