@@ -1,4 +1,3 @@
-
 import yfinance as yf
 import pandas as pd
 
@@ -28,11 +27,17 @@ def get_large_options(stocks, min_volume):
                 # جلب بيانات الـ Calls
                 calls = ticker.option_chain(date).calls
                 large_calls = calls[calls['volume'] > min_volume]
+                # Rename 'lastTradeDate' to 'expiration' if it exists
+                if 'lastTradeDate' in large_calls.columns:
+                    large_calls = large_calls.rename(columns={'lastTradeDate': 'expiration'})
                 options_data.append(large_calls)
 
                 # جلب بيانات الـ Puts
                 puts = ticker.option_chain(date).puts
                 large_puts = puts[puts['volume'] > min_volume]
+                # Rename 'lastTradeDate' to 'expiration' if it exists
+                if 'lastTradeDate' in large_puts.columns:
+                    large_puts = large_puts.rename(columns={'lastTradeDate': 'expiration'})
                 options_data.append(large_puts)
 
             except Exception as e:
@@ -41,7 +46,13 @@ def get_large_options(stocks, min_volume):
     # دمج البيانات في جدول واحد
     if options_data:
         result_df = pd.concat(options_data)
-        print(result_df[['contractSymbol', 'expiration', 'strike', 'volume', 'openInterest', 'bid', 'ask']])
+        # Use 'lastTradeDate' if 'expiration' is not present
+        columns_to_print = ['contractSymbol', 'strike', 'volume', 'openInterest', 'bid', 'ask']
+        if 'expiration' in result_df.columns:
+            columns_to_print.insert(1, 'expiration')
+        elif 'lastTradeDate' in result_df.columns:
+            columns_to_print.insert(1, 'lastTradeDate')
+        print(result_df[columns_to_print])
     else:
         print("No large options data found.")
 
