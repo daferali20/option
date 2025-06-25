@@ -12,3 +12,5 @@ python-telegram-bot
 matplotlib
 scikit-learn
 python-dotenv
+alpha-vantage 
+finnhub-python 
