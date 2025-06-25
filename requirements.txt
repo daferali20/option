@@ -2,3 +2,39 @@ yfinance
 requests
 pandas
 newsapi-python
+# المكتبات الأساسية
+streamlit==1.32.0
+python-dotenv==1.0.0
+
+# معالجة البيانات والتحليل
+pandas==2.1.0
+numpy==1.24.0
+yfinance==0.2.28
+ta-lib==0.4.27  # قد يحتاج تثبيت منفصل عبر system package
+
+# APIs وطلب البيانات
+requests==2.31.0
+alpha-vantage==2.3.1
+finnhub-python==2.4.18
+yfinance==0.2.28
+
+# قواعد البيانات والتخزين
+sqlite3==3.42.0  # عادةً يأتي مع بايثون
+cachetools==5.3.1
+
+# التواريخ والأوقات
+python-dateutil==2.8.2
+pytz==2023.3
+
+# التصور البياني
+plotly==5.15.0
+matplotlib==3.7.1
+mplfinance==0.12.9b7
+
+# التعلم الآلي للتنبؤ (اختياري)
+scikit-learn==1.3.0
+tensorflow==2.13.0  # اختياري للتنبؤات المتقدمة
+prophet==1.1.4  # من فيسبوك
+
+# إدارة التنبيهات
+python-telegram-bot==20.5
