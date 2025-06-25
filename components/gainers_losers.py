@@ -2,12 +2,20 @@ import pandas as pd
 import requests
 import streamlit as st
 
+HEADERS = {
+    "User-Agent": "Mozilla/5.0"
+}
+
 @st.cache_data(ttl=1800)
 def get_yahoo_table(url: str) -> pd.DataFrame:
     try:
-        tables = pd.read_html(url)
+        response = requests.get(url, headers=HEADERS)
+        response.raise_for_status()
+        tables = pd.read_html(response.text)
         if tables:
-            return tables[0].dropna().head(10)
+            df = tables[0].dropna()
+            df.columns = [col.strip() for col in df.columns]
+            return df.head(10)
     except Exception as e:
         st.error(f"فشل في تحميل البيانات من Yahoo Finance: {str(e)}")
     return pd.DataFrame()
