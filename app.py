@@ -1,10 +1,95 @@
-from components.performance import compare_with_index
-import plotly.graph_objects as go
+import streamlit as st
+from style import load_css
+from components.watchlist import watchlist_ui
+from components.gainers_losers import show_gainers_losers
+from components.news import show_market_news
+from components.stock_news import show_stock_news
+from components.prediction import show_prediction
+from components.performance import show_performance
+from components.analysts import show_analysts_ratings
+from components.indices import show_market_indices
+from components.telegram_alerts import TelegramAlerts
 
-perf_df = compare_with_index("AAPL", "^GSPC", start_date, end_date)
-if not perf_df.empty:
-    fig = go.Figure()
-    for col in perf_df.columns:
-        fig.add_trace(go.Scatter(x=perf_df.index, y=perf_df[col], mode='lines', name=col))
-    st.plotly_chart(fig, use_container_width=True)
+# إعداد صفحة Streamlit
+def setup_page():
+    st.set_page_config(
+        page_title="نظام مراقبة الأسهم",
+        page_icon="📈",
+        layout="wide"
+    )
+    load_css()  # تحميل التنسيقات من style.py
 
+# القائمة الجانبية
+def sidebar():
+    st.sidebar.title("القائمة الرئيسية")
+    menu_options = {
+        "🏠 الصفحة الرئيسية": "home",
+        "📋 قائمة المراقبة": "watchlist",
+        "📰 أخبار السوق": "news",
+        "🚀📉 الأسهم الصاعدة والهابطة": "gainers_losers",
+        "📊 أداء السهم": "performance",
+        "🔮 توقعات السهم": "prediction",
+        "👨‍💼 تقييم المحللين": "analysts",
+        "📡 مؤشرات السوق": "indices",
+        "🔔 إدارة التنبيهات": "alerts"
+    }
+    
+    selected = st.sidebar.radio("اختر قسم", list(menu_options.keys()))
+    return menu_options[selected]
+
+# الصفحة الرئيسية
+def home_page():
+    st.title("📈 نظام مراقبة الأسهم")
+    st.markdown("""
+    مرحباً بك في نظام مراقبة الأسهم الخاص بك. استخدم القائمة الجانبية للوصول إلى:
+    - **قائمة المراقبة**: تتبع الأسهم المفضلة لديك
+    - **أخبار السوق**: آخر التطورات في الأسواق المالية
+    - **الأسهم الصاعدة/الهابطة**: أكثر الأسهم تحركاً اليوم
+    - **توقعات السهم**: تحليل فني وتنبؤ بالأسعار
+    """)
+    
+    # عرض موجز لبعض البيانات
+    col1, col2 = st.columns(2)
+    with col1:
+        show_market_indices(brief=True)
+    with col2:
+        show_gainers_losers(brief=True)
+
+# صفحة التنبيهات
+def alerts_page():
+    st.title("🔔 إدارة التنبيهات")
+    telegram = TelegramAlerts()
+    
+    st.subheader("إرسال تنبيه اختباري")
+    if st.button("إرسال رسالة اختبارية"):
+        if telegram.send_alert("🔔 هذا تنبيه اختباري من نظام مراقبة الأسهم"):
+            st.success("تم إرسال التنبيه بنجاح!")
+        else:
+            st.error("فشل إرسال التنبيه")
+
+# التنقل بين الصفحات
+def main():
+    setup_page()
+    page = sidebar()
+    
+    if page == "home":
+        home_page()
+    elif page == "watchlist":
+        watchlist_ui()
+    elif page == "news":
+        show_market_news()
+    elif page == "gainers_losers":
+        show_gainers_losers()
+    elif page == "performance":
+        show_performance()
+    elif page == "prediction":
+        show_prediction()
+    elif page == "analysts":
+        show_analysts_ratings()
+    elif page == "indices":
+        show_market_indices()
+    elif page == "alerts":
+        alerts_page()
+
+if __name__ == "__main__":
+    main()
