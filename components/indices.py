@@ -1,9 +1,3 @@
-
-# Fill in components/indices.py with actual logic to fetch S&P 500, Dow Jones, and Nasdaq data using yfinance
-
-indices_py_path = "/mnt/data/stock_dashboard/components/indices.py"
-
-indices_code = '''\
 import yfinance as yf
 import pandas as pd
 from datetime import datetime
@@ -31,9 +25,3 @@ def get_all_indices_data(start_date: datetime, end_date: datetime):
         df = fetch_index_data(symbol, start_date, end_date)
         result[name] = df
     return result
-'''
-
-with open(indices_py_path, "w", encoding="utf-8") as f:
-    f.write(indices_code)
-
-indices_py_path
