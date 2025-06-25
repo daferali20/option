@@ -4,25 +4,20 @@ def load_css():
     custom_css = """
     <style>
     .stApp {
-        background-color: #f0f2f6;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+        font-family: 'Segoe UI', sans-serif;
     }
-    h1 {
-        color: #4B7BEC;
-    }
-    p, div, span {
-        color: #333333;
+    h1, h2, h3 {
+        color: #1f77b4;
     }
     .stButton>button {
-        background-color: #4B7BEC;
+        background-color: #1f77b4;
         color: white;
-        border-radius: 8px;
+        border-radius: 5px;
         padding: 8px 16px;
-        font-weight: bold;
     }
     .stButton>button:hover {
-        background-color: #365fcf;
-        color: #e0e0e0;
+        background-color: #105c91;
     }
     </style>
     """
