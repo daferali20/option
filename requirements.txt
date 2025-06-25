@@ -11,3 +11,4 @@ textblob
 python-telegram-bot
 matplotlib
 scikit-learn
+python-dotenv
