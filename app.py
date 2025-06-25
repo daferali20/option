@@ -10,16 +10,14 @@ from components.analysts import show_analysts_ratings
 from components.indices import show_market_indices
 from components.telegram_alerts import TelegramAlerts
 
-# إعداد صفحة Streamlit
 def setup_page():
     st.set_page_config(
         page_title="نظام مراقبة الأسهم",
         page_icon="📈",
         layout="wide"
     )
-    load_css()  # تحميل التنسيقات من style.py
+    load_css()
 
-# القائمة الجانبية
 def sidebar():
     st.sidebar.title("القائمة الرئيسية")
     menu_options = {
@@ -33,33 +31,27 @@ def sidebar():
         "📡 مؤشرات السوق": "indices",
         "🔔 إدارة التنبيهات": "alerts"
     }
-    
     selected = st.sidebar.radio("اختر قسم", list(menu_options.keys()))
     return menu_options[selected]
 
-# الصفحة الرئيسية
 def home_page():
     st.title("📈 نظام مراقبة الأسهم")
     st.markdown("""
     مرحباً بك في نظام مراقبة الأسهم الخاص بك. استخدم القائمة الجانبية للوصول إلى:
-    - **قائمة المراقبة**: تتبع الأسهم المفضلة لديك
-    - **أخبار السوق**: آخر التطورات في الأسواق المالية
-    - **الأسهم الصاعدة/الهابطة**: أكثر الأسهم تحركاً اليوم
-    - **توقعات السهم**: تحليل فني وتنبؤ بالأسعار
+    - **قائمة المراقبة**
+    - **أخبار السوق**
+    - **الأسهم الصاعدة/الهابطة**
+    - **توقعات السهم**
     """)
-    
-    # عرض موجز لبعض البيانات
     col1, col2 = st.columns(2)
     with col1:
         show_market_indices(brief=True)
     with col2:
         show_gainers_losers(brief=True)
 
-# صفحة التنبيهات
 def alerts_page():
     st.title("🔔 إدارة التنبيهات")
     telegram = TelegramAlerts()
-    
     st.subheader("إرسال تنبيه اختباري")
     if st.button("إرسال رسالة اختبارية"):
         if telegram.send_alert("🔔 هذا تنبيه اختباري من نظام مراقبة الأسهم"):
@@ -67,11 +59,9 @@ def alerts_page():
         else:
             st.error("فشل إرسال التنبيه")
 
-# التنقل بين الصفحات
 def main():
     setup_page()
     page = sidebar()
-    
     if page == "home":
         home_page()
     elif page == "watchlist":
