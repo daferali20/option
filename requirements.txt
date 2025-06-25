@@ -2,38 +2,23 @@ yfinance
 requests
 pandas
 newsapi-python
-# المكتبات الأساسية
 streamlit
 python-dotenv
-
-# معالجة البيانات والتحليل
 pandas
 numpy
 yfinance
-ta-lib # قد يحتاج تثبيت منفصل عبر system package
-
-# APIs وطلب البيانات
 alpha-vantage
 finnhub-python
-
-
-# قواعد البيانات والتخزين
-sqlite3 # عادةً يأتي مع بايثون
-cachetools
-
-# التواريخ والأوقات
 python-dateutil
 pytz
-
-# التصور البياني
 plotly
 matplotlib
 mplfinance
-
-# التعلم الآلي للتنبؤ (اختياري)
 scikit-learn
-tensorflow # اختياري للتنبؤات المتقدمة
-prophet # من فيسبوك
-
-# إدارة التنبيهات
+tensorflow
+prophet
 python-telegram-bot
+lxml
+textblob
+vaderSentiment
+
